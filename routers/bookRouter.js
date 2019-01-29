@@ -20,60 +20,44 @@ function routes() {
         Book.findAll().then(books => res.status(200).json(books));
     });
 
+    bookRouter.use('/books/:bookId', (req, res, next) => {
+        Book.findOne({
+            where: { id: req.params.bookId }
+        })
+            .then(book => {
+                if (book) {
+                    req.book = book;
+                    return next();
+                }
+                return res.sendStatus(404);
+            })
+    });
+
   bookRouter.route("/books/:bookId")
-  .get((req, res) => {
-    const queryString = "SELECT * FROM BOOKS WHERE ID = ?";
-
-    getConnection().query(queryString, req.params.bookId, (err, results, fields) => {
-        if (err) {
-          console.log(`Failed to query for books: ${err}`);
-          res.sendStatus(500);
-          return;
-        }
-
-        console.log("Fetched successfully");
-        return res.status(200).json(results);
-      }
-    );
-  })
-  .put((req, res) => {
-    const queryString = "UPDATE BOOKS SET ? WHERE  ID = ?";
-    const book = {
-        title: req.body.title,
-        author: req.body.author,
-        genre: req.body.genre,
-        read: req.body.read ? req.body.read : 0
-      };
-
-    getConnection().query(queryString, [book, req.params.bookId], (err, results, fields) => {
-        if (err) {
-          console.log(`Failed to query for books: ${err}`);
-          res.sendStatus(500);
-          return;
-        }
-
-        console.log("Updated successfully");
-        res.end();
-      }
-    );
-    return res.status(201).json(book);
-  })
-  .delete((req, res) => {
-    const queryString = "DELETE FROM BOOKS WHERE  ID = ?";
-
-    getConnection().query(queryString, req.params.bookId, (err, results, fields) => {
-        if (err) {
-          console.log(`Failed to query for books: ${err}`);
-          res.sendStatus(500);
-          return;
-        }
-
-        console.log("Deleted successfully");
-        res.end();
-      }
-    );
-    return res.status(204);
-  })
+      .get((req, res) => res.status(200).json(req.book))
+      .put((req, res) => {
+        Book.update(
+              {
+                  title: req.body.title,
+                  author: req.body.author,
+                  genre: req.body.genre,
+                  read: req.body.read ? req.body.read : 0
+              },
+              { returning: true, plain: true, where: { id: req.params.bookId } })
+              .then(result => {
+                  res.status(201).json(result);
+              })
+              .catch(err => res.status(404).json(err));
+        })
+      .delete((req, res) => {
+          Book.destroy({
+              where: { id: req.params.bookId }
+          })
+              .then(result => {
+                  res.status(200).json(result);
+              })
+              .catch(err => res.status(404).json(err));
+      })
 
   return bookRouter;
 }

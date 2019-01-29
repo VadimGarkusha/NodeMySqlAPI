@@ -9,7 +9,8 @@ module.exports = (sequelize, type) => {
     },
     title: {
       type: Sequelize.STRING(100),
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     author: {
       type: Sequelize.STRING(100),
@@ -20,7 +21,8 @@ module.exports = (sequelize, type) => {
       allowNull: false
     },
     read: {
-      type: Sequelize.TEXT("tiny")
+      type: Sequelize.BOOLEAN,
+      defaultValue: 0
     }
   });
 };
