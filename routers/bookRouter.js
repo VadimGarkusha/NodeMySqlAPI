@@ -1,24 +1,14 @@
 const express = require("express");
-const Book = require('../dbconnection');
+const {Book, Op} = require('../dbconnection');
+const booksController = require('../controllers/booksController');
 
-function routes() {
+routes = () => {
   const bookRouter = express.Router();
+  const controller = booksController(Book, Op);
 
   bookRouter.route("/books")
-    .post((req, res) => {
-        const body = req.body;
-
-        Book.create(body)
-        .then(books => res.status(201).json(books))
-        .catch(err => res.status(400).json(err));
-    })
-    .get((req, res) => {
-        if (req.query.genre) {
-            query.genre = req.query.genre;
-          }
-
-        Book.findAll().then(books => res.status(200).json(books));
-    });
+    .post(controller.post)
+    .get(controller.get);
 
     bookRouter.use('/books/:bookId', (req, res, next) => {
         Book.findOne({

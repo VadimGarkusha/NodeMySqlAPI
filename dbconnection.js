@@ -18,9 +18,10 @@ if (port == 4000) {
 const sequelize = new Sequelize(...config);
 
 const Book = BookModel(sequelize, Sequelize);
+const Op = Sequelize.Op;
 
 sequelize.sync({ force: false }).then(() => {
   console.log(`Database & tables created!`);
 });
 
-module.exports = Book;
+module.exports = {Book, Op};
