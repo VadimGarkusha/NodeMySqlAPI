@@ -22,7 +22,12 @@ if (process.env.NODE_ENV === 'Test') {
     { dialect: 'mysql', host: 'localhost', operatorsAliases: false },
   ]);
 } else {
-  // same as above, with live server details
+  config.push.apply(config, [
+    'BooksNode',
+    'root',
+    'password',
+    { dialect: 'mysql', host: 'localhost', operatorsAliases: false },
+  ]);
 }
 
 const sequelize = new Sequelize(...config);
