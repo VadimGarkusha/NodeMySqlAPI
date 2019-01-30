@@ -3,7 +3,14 @@ const booksController = (Book, Op) => {
     const genre = req.query.genre ? req.query.genre : '';
 
     Book.findAll({ where: { genre: { [Op.like]: `%${genre}%` } } }).then(
-      books => res.status(200).json(books)
+      books => {
+          const returnBooks = books.map(book => {
+              let newBook = book.toJSON();
+              newBook.links = {self:`http://${req.headers.host}/api/books/${book.id}`};
+              return newBook;
+          })
+          console.log(returnBooks);
+          res.status(200).json(returnBooks);}
     );
   };
 
