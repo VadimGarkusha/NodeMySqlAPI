@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'Test') {
     'BooksNode',
     'root',
     'password',
-    { dialect: 'mysql', host: 'localhost', operatorsAliases: false },
+    { dialect: 'mysql', host: '<heroku host>', operatorsAliases: false },
   ]);
 }
 
