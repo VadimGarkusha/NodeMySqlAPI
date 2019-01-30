@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Sequelize = require('sequelize');
 const BookModel = require('./models/book');
 
@@ -6,14 +7,14 @@ const config = [];
 
 console.log(`Running in ${process.env.NODE_ENV}`);
 
-if(process.env.NODE_ENV === 'Test'){
+if (process.env.NODE_ENV === 'Test') {
   config.push.apply(config, [
     'BooksNode_Test',
     'root',
     'password',
     { dialect: 'mysql', host: 'localhost', operatorsAliases: false },
   ]);
-} else if (port == 4000) {
+} else if (port == 4000) { // eslint-disable-line eqeqeq
   config.push.apply(config, [
     'BooksNode',
     'root',
