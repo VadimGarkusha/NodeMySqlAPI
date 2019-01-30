@@ -23,10 +23,10 @@ if (process.env.NODE_ENV === 'Test') {
   ]);
 } else {
   config.push.apply(config, [
-    'BooksNode',
-    'root',
-    'password',
-    { dialect: 'mysql', host: '<heroku host>', operatorsAliases: false },
+    'heroku_894b19d542ea89d',
+    'bf57b8f2e9ee74',
+    'cfcc2e6a',
+    { dialect: 'mysql', host: 'us-cdbr-iron-east-03.cleardb.net', operatorsAliases: false },
   ]);
 }
 
