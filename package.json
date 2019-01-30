@@ -4,16 +4,21 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "pretest": "eslint --ignore-path .",
     "lint": "eslint .",
-    "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js --parallel lint:watch",
+    "lint:watch": "nodemon --exec \"npm run lint || exit 1\" --ext js",
+    "test": "set NODE_ENV=Test&& mocha tests/**/*Tests.js"
   },
   "author": "Vadym Harkusha",
   "license": "ISC",
   "dependencies": {
+    "babel-eslint": "^10.0.1",
     "body-parser": "^1.18.3",
     "e": "0.0.4",
+    "eslint-watch": "^4.0.2",
     "express": "^4.16.4",
+    "lodash": "^4.17.11",
     "mysql2": "^1.6.4",
     "nodemon": "^1.18.9",
     "sequelize": "^4.42.0"
@@ -22,6 +27,10 @@
     "eslint": "^5.12.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.15.0",
+    "mocha": "^5.2.0",
+    "should": "^13.2.3",
+    "sinon": "^7.2.3",
+    "supertest": "^3.4.2",
     "webpack": "^4.29.0"
   },
   "nodemonConfig": {

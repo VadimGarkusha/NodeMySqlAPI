@@ -1,27 +1,36 @@
-const Sequelize = require("sequelize");
-const BookModel = require("./models/book");
+const Sequelize = require('sequelize');
+const BookModel = require('./models/book');
 
-port = process.env.PORT || 4000;
-let config = [];
+const port = process.env.PORT || 4000;
+const config = [];
 
-if (port == 4000) {
+console.log(`Running in ${process.env.NODE_ENV}`);
+
+if(process.env.NODE_ENV === 'Test'){
   config.push.apply(config, [
-    "BooksNode",
-    "root",
-    "password",
-    { dialect: "mysql", host: "localhost", operatorsAliases: false }
+    'BooksNode_Test',
+    'root',
+    'password',
+    { dialect: 'mysql', host: 'localhost', operatorsAliases: false },
+  ]);
+} else if (port == 4000) {
+  config.push.apply(config, [
+    'BooksNode',
+    'root',
+    'password',
+    { dialect: 'mysql', host: 'localhost', operatorsAliases: false },
   ]);
 } else {
-  //same as above, with live server details
+  // same as above, with live server details
 }
 
 const sequelize = new Sequelize(...config);
 
 const Book = BookModel(sequelize, Sequelize);
-const Op = Sequelize.Op;
+const { Op } = Sequelize;
 
 sequelize.sync({ force: false }).then(() => {
-  console.log(`Database & tables created!`);
+  console.log('Database & tables created!');
 });
 
-module.exports = {Book, Op};
+module.exports = { Book, Op };
